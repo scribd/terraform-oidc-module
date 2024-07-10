@@ -116,3 +116,15 @@ variable "custom_policy_arns" {
   type        = list(string)
   default     = []
 }
+
+variable "aws_iam_openid_connect_provider_arn" {
+  description = "When provided, will not create aws_iam_openid_connect_provider, but use provided in policy"
+  type        = string
+  default     = ""
+}
+
+variable "use_existing_aws_iam_openid_connect_provider" {
+  description = "If true will use aws_iam_openid_connect_provider_arn as arn"
+  type        = bool
+  default     = false
+}

@@ -1,7 +1,1 @@
-# Everything is basically owned by Platform Infra
-* @scribd/platform-infra
-
-# For the time being, changes to the settings must be approved by somebody with
-# effective "root" access
-# Since CODEOWNERS governs admin access, it should be guarded too
-CODEOWNERS @scribd/platform-eng-leads
+* @scribd/core-infrastructure

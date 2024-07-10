@@ -1,11 +1,13 @@
 locals {
-  s3_policy             = var.s3_policy
-  service_policy_assume = var.service_policy_assume
-  ecr_access            = var.ecr_access
-  custom_policy_arns    = var.custom_policy_arns
+  s3_policy                           = var.s3_policy
+  service_policy_assume               = var.service_policy_assume
+  ecr_access                          = var.ecr_access
+  custom_policy_arns                  = var.custom_policy_arns
+  aws_iam_openid_connect_provider_arn = var.use_existing_aws_iam_openid_connect_provider ? var.aws_iam_openid_connect_provider_arn : join("", aws_iam_openid_connect_provider.this.*.arn)
 }
 
 resource "aws_iam_openid_connect_provider" "this" {
+  count           = var.use_existing_aws_iam_openid_connect_provider ? 0 : 1
   url             = var.url
   client_id_list  = var.client_id_list
   thumbprint_list = var.thumbprint_list
@@ -37,7 +39,7 @@ data "aws_iam_policy_document" "this" {
     principals {
       type = "Federated"
       identifiers = [
-        aws_iam_openid_connect_provider.this.arn
+        local.aws_iam_openid_connect_provider_arn
       ]
     }
     condition {

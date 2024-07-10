@@ -123,5 +123,35 @@ module "oidc" {
   }
 }
 ```
+###
+3. Module do not create openid connect provider but use existing
+```
+resource "aws_iam_openid_connect_provider" "this" {
+  url             = "https://token.actions.githubusercontent.com"
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = ["11111111111111111111111111"]
+}
+
+module "oidc" {
+  source = "https://github.com/scribd/terraform-oidc-module"
+
+  name = "example"
+  url = "https://token.actions.githubusercontent.com"
+  repo_ref = ["repo:REPO_ORG/REPO_NAME:ref:refs/heads/main"]
+  use_existing_aws_iam_openid_connect_provider = true
+  aws_iam_openid_connect_provider_arn = aws_iam_openid_connect_provider.this.arn
+  s3_policy = true
+  s3_bucket_arn = "example-bucket"
+  # if s3_bucket_actions is not added then it defaults to S3 read only actions
+  s3_bucket_actions = ["s3:Put", "s3:PutAcl"]
+  s3_bucket_path = "/example"
+
+  tags = {
+    Terraform = "true"
+    Environment = "dev"
+  }
+}
+```
+
 ##
 Made with ❤️ by the Platform Infra Team.
