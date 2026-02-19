@@ -112,7 +112,7 @@ variable "ecr_actions" {
 
 # Custom IAM policy attachment.
 variable "custom_policy_arns" {
-  description = "List of AIAM policy ARNs what will be attached to OIDC IAM role"
+  description = "List of IAM policy ARNs what will be attached to OIDC IAM role"
   type        = list(string)
   default     = []
 }
